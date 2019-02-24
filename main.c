@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 
 //结构体类型定义
 typedef struct {
@@ -42,6 +43,14 @@ void PointerAndArray(void);
 
 void TestPointerAndArray(int *a, int **b);
 
+void CharAndStr(void);
+
+void Pointer_Array_String(void);
+
+void StrInput_OutPut(void);
+
+void StrFunc(void);
+
 int main() {
 //    Bool();
 //    Comma();
@@ -56,7 +65,102 @@ int main() {
 //    GetPoint();
 //    TestPoint();
 //    PointerAndArray();
+//    CharAndStr();
+//    Pointer_Array_String();
+//    StrInput_OutPut();
+//    StrFunc();
     return 0;
+}
+
+/*17、字符串函数*/
+void StrFunc(){
+    char *s1="panny";//可以使用字符串操作
+    char s2[]="panny";
+    char s3[]={'p','a','n','n','y','\0'};
+    char s4[]={'p','a','n','n','y'};//结尾不是‘\0’，不能使用字符串函数
+
+    //1、strlen返回字符串长度
+    printf("s1:%lu,s2:%lu,s3:%lu,s4:%lu\n",strlen(s1),strlen(s2),strlen(s3),strlen(s4));
+    printf("s1:%lu,s2:%lu,s3:%lu,s4:%lu\n", sizeof(s1),sizeof(s2),sizeof(s3), sizeof(s4));
+
+    //2、strcmp字符串比较函数 strncmp:只比较前n位
+    char s5[]="Panny";
+    char s6[]="panny1";
+
+    printf("%d\n",strcmp(s1,s2));
+    printf("%d\n",strcmp(s1,s5));
+    printf("%d\n",strcmp(s1,s6));
+
+    //3、strcpy字符串拷贝函数 strncpy:安全校验的拷贝
+    strcpy(s6,s5);
+
+    //4、strcat字符串拼接 strncat:安全校验的拼接
+    //5、strchr,strrchr字符串中寻找指定字符（自左向右和自右向左）
+
+}
+
+/*16、字符串输入输出*/
+void StrInput_OutPut(){
+    char s1[5];
+    char s2[5];
+    scanf("%4s",s1);//%s读取连续的单词，以空格、换行，tab结尾
+    scanf("%4s",s2);//
+    printf("s1:%s##\n",s1);
+    printf("s2:%s##\n",s2);
+}
+
+/*15、字符指针、字符数组、字符串（以0结尾的字符串）*/
+void Pointer_Array_String(){
+    //字符指针，实际上是const类型的字符指针，指向字符或连续字符序列
+    char *s1="Hello";
+    printf("s1的地址：%p，s1的大小:%lu\n",s1, sizeof(s1));
+//    s1[0]='B';//不能赋值！位于代码段，为只读数据
+//    printf("%c",s1[0]);
+
+    //字符数组，元素为字符的数组
+    char s2[]={'H','e','l','l','o'};
+    printf("s1的地址：%p,s2的大小：%lu\n",s2, sizeof(s2));
+
+    //字符串，以数值0结尾的字符数组
+    char s3[]="Hello";
+    printf("s3的大小：%lu\n", sizeof(s3));
+    char s4[]={'H','e','l','l','o','\0'};
+    printf("s4的大小：%lu\n", sizeof(s4));
+
+    //输出演示
+    for (int i = 0; i < sizeof(s3) / sizeof(s3[0]); ++i) {
+        printf("%c",s3[i]);
+    }
+}
+
+/*14、字符和字符串
+ * char类型在计算机内部以整形的形式存在*/
+void CharAndStr(){
+    //字符的存在形式为int
+    char a=65;
+    char b='1';
+    printf("a=%d,a='%c',b=%d,b='%c'\n",a,a,b,b);
+
+    /*注意scanf（%d%c,&x,&y）和scanf(%d %c,&x,&y)的区别
+    * 空格会讲所有的连续空格视为一个空格*/
+    int x;
+    char y;
+    scanf("%d %c",&x,&y);
+    printf("x=%d,y=%d,y='%c'",x,y,y);
+
+    //逃逸字符
+    printf("123\bA\n45\t6");
+
+    //字符串,'\0'整数的0,0值，也可以用0，区别与‘0’（0字符）
+    char word1[]={'H','e','l','l','o','\0'};
+    char word2[]="Hello";
+    char word3[10]="Hello";
+    char *str="Hello";
+
+    //字符串的自动拼接
+    printf("试一下拼接，"
+           "试一下拼接");
+
 }
 
 /*13、指针与数组
