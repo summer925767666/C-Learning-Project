@@ -42,4 +42,12 @@ void TestStruct(void);
 
 void TestList(void);
 
+void TestFuncPointer(void (*pf3)(void));
+
+void scf_prf(void);
+
+void file_operate(void);
+
+void bitcal(void);
+
 #endif //C_LEARNING_ADVANCED_H
