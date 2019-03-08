@@ -5,7 +5,7 @@
 #include "Advanced.h"
 
 //全局变量定义在.c文件中
-int gAll=6;
+int gAll = 6;
 
 /*18、const指针和数组*/
 void Pointer_Array() {
@@ -57,7 +57,7 @@ void PointerCalculate() {
 void StrOperation() {
     //int putchar(int para)函数
     //int getchar(void)
-    int ch1=getchar();
+    int ch1 = getchar();
     putchar(ch1);
     printf("\n");
     putchar('1');
@@ -124,29 +124,170 @@ void TestStruct() {
 
     //结构体指针
     Pointer_Date pd = &today;
-    pd->year=1993;
-    printf("%d,%d",today.year,pd->year);
+    pd->year = 1993;
+    printf("%d,%d", today.year, pd->year);
 
     //结构体数组
-    Date times[10]={{.day=01,.month=03,.year=2019}};
-
-    //
+    Date times[10] = {{.day=01, .month=03, .year=2019}};
 
 }
 
 /*23、联合*/
-void TestUnion(){
+void TestUnion() {
     CHI chi;
-    chi.i=1234;
+    chi.i = 1234;
     for (int i = 0; i < sizeof(int); ++i) {
-        printf("%02hhx",chi.ch[i]);
+        printf("%02hhx", chi.ch[i]);
     }
 }
 
 /*24、链表*/
-void TestList(){
-    Node *p=(Node *)malloc(sizeof(int));
+void TestList() {
+    Node *p = (Node *) malloc(sizeof(int));
     free(p);
 }
 
 /*25、函数指针*/
+void function1() {
+    printf("function pointer1\n");
+}
+
+void function2() {
+    printf("function pointer2\n");
+}
+
+void function3(int i) {
+    printf("function pointer3:%d\n", i);
+}
+
+void TestFuncPointer(void (*pf3)(void)) {
+    void (*pf)(void) = function1;
+    (*pf)();
+    pf();
+
+    pf = function2;
+    pf();
+
+    void (*pf2)(int) = function3;
+    pf2(5);
+
+    pf3();
+}
+
+/*26、格式化输入输出
+ * %[flag][width][.prec][hil]type
+ * %[flag]type*/
+void scf_prf() {
+    //1、[flag]
+    printf("%9d\n", 123);//9位
+    printf("%-9d\n", 123);//‘-’左对齐
+    printf("%09d\n", 123);//‘0’0填充
+
+    //2、[width] 3、[.prec]
+    printf("%.2f\n", 123.0);//小数点2位
+    printf("%9.2f\n", 123.0);//共9为，小数点2位
+    int len = 9;
+    printf("%*d\n", len, 123);//‘*’表示下一个参数是字符数
+
+    //4.[hil]类型修饰
+
+    //5.type类型
+    int num;
+    printf("%d%n\n", 123456789, &num);//%n,输出已经输出的字符个数
+    printf("%d\n", num);
+
+    //scanf
+    //1、'*'表示跳过一个输入
+    scanf("%*d%d", &num);
+    printf("%d\n", num);
+
+    //scanf和printf的返回值，返回读入和输出的字符的个数
+}
+
+/*27、文件操作*/
+void file_operate() {
+    /*文件标准结构
+     * FILE *fp=fopen("file","r");
+     * if(fp){
+     * fscanf(fp,...);
+     * fclose(fp,...);
+     * }else{
+     * ...
+     * }
+     * */
+
+    FILE *fp = fopen("test.data", "w+");//以读写方式创建文件
+    if (fp) {
+        printf("%p\n", fp);
+        // 写入
+        int res1= fputc(50,fp);
+        printf("在文件中写入了%d\n",res1);
+
+        fclose(fp);
+        fp=fopen("test.data","r");
+        //读取
+        int res2= fgetc(fp);
+        printf("从文件中读取了%d\n",res2);
+        //关闭
+        fclose(fp);
+    } else {
+        printf("操作失败\n");
+    }
+
+}
+
+void BinaryPrtf(int num){
+    unsigned int mask=1u<<31;
+
+    for (;mask;mask>>=1){
+        printf("%d",num&mask?1:0);
+    }
+    printf("\n");
+}
+
+/*28、位预算*/
+void bitcal(){
+    int a=5;
+    int b=4;
+    BinaryPrtf(a);
+    BinaryPrtf(b);
+    //按位与 &，
+    // 用1与不变，用0与强制等于0
+    // 取一个数的某一段
+    BinaryPrtf(a&b);
+
+    /*按位取或 |
+     * 用0或不变，用1或强制等于1*/
+    BinaryPrtf(a|b);
+
+    /*按位取反～*/
+    BinaryPrtf(~a);
+
+    /*按位异或
+     * 可以用来加密 x^y^y=x
+     * */
+    BinaryPrtf(a^b);
+
+    /*左移运算和右移运算
+     * */
+    BinaryPrtf(a<<1);
+    BinaryPrtf(a>>1);
+
+    //位段
+    struct {
+        unsigned int leading:3;
+        unsigned int FLAG1:1;
+        unsigned int FLAG2:1;
+        int trailing:27;
+    }u0;
+
+    u0.leading=3;
+    u0.FLAG1=1;
+    u0.FLAG2=0;
+    u0.trailing=0;
+
+    printf("sizeof(u0):%lu\n", sizeof(u0));
+    int num=*((int *)(&u0));
+
+    BinaryPrtf(num);
+}
